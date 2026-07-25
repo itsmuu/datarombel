@@ -15,7 +15,7 @@
         <div class="max-w-6xl mx-auto px-4 text-center sm:text-left sm:flex sm:justify-between sm:items-center">
             <div>
                 <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Data Siswa X TKJ</h1>
-                <p class="text-indigo-200 text-sm mt-1">Sistem Informasi Anggota Rombel </p>
+                <p class="text-indigo-200 text-sm mt-1">Sistem Informasi Anggota Rombel Real-Time</p>
             </div>
             <div class="mt-4 sm:mt-0 bg-indigo-800 text-indigo-100 px-3 py-1.5 rounded-full text-xs font-semibold inline-flex items-center gap-2 border border-indigo-500/30">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -95,7 +95,7 @@
                             <th class="py-3.5 px-6">NISN</th>
                             <th class="py-3.5 px-6">Nama Siswa</th>
                             <th class="py-3.5 px-6">L/P</th>
-                            <th class="py-3.5 px-6">Kelas</th>
+                            <th class="py-3.5 px-6">Kelas & Detail</th>
                         </tr>
                     </thead>
                     <tbody id="siswaTableBody" class="divide-y divide-slate-100 text-sm">
@@ -107,6 +107,54 @@
         </div>
 
     </main>
+
+    <!-- Modal Detail Siswa -->
+    <div id="detailModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200" id="modalCard">
+            <div class="bg-indigo-700 text-white p-5 flex justify-between items-start">
+                <div>
+                    <span class="text-xs font-semibold text-indigo-200 uppercase tracking-wider">Detail Informasi Siswa</span>
+                    <h3 id="modalNama" class="text-xl font-bold mt-1">Nama Siswa</h3>
+                </div>
+                <button onclick="closeModal()" class="text-indigo-200 hover:text-white p-1 rounded-lg transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4 text-sm">
+                <div class="flex justify-between border-b border-slate-100 pb-2">
+                    <span class="text-slate-500 font-medium">NISN</span>
+                    <span id="modalNisn" class="font-mono text-slate-800 font-semibold">-</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-100 pb-2">
+                    <span class="text-slate-500 font-medium">Kelas / Rombel</span>
+                    <span id="modalKelas" class="font-semibold text-indigo-600">-</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-100 pb-2">
+                    <span class="text-slate-500 font-medium">Jenis Kelamin</span>
+                    <span id="modalGender" class="font-semibold text-slate-800">-</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-100 pb-2">
+                    <span class="text-slate-500 font-medium">Jalur Pendaftaran</span>
+                    <span id="modalJalur" class="font-semibold text-emerald-600 text-right max-w-[200px]">-</span>
+                </div>
+                <div class="flex justify-between border-b border-slate-100 pb-2">
+                    <span class="text-slate-500 font-medium">Kategori / Asal</span>
+                    <span id="modalKategori" class="font-semibold text-slate-800 text-right max-w-[200px]">-</span>
+                </div>
+                <div class="flex justify-between pb-1">
+                    <span class="text-slate-500 font-medium">Sekolah Verifikator</span>
+                    <span id="modalSekolah" class="font-semibold text-slate-800 text-right max-w-[200px]">-</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 text-right">
+                <button onclick="closeModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Google Sheet ID & Sheet Name
@@ -154,11 +202,15 @@
                 const rows = data.table.rows;
                 
                 // Transform data baris menjadi array objek siswa
-                allSiswaData = rows.map(row => {
+                allSiswaData = rows.map((row, index) => {
                     const c = row.c;
                     return {
+                        id: index,
                         nama: c[2] ? c[2].v : '',
                         nisn: c[3] ? String(c[3].v) : '',
+                        jalur: c[4] ? c[4].v : 'Tidak Diisi',
+                        kategori: c[5] ? c[5].v : 'Tidak Diisi',
+                        sekolahVerifikator: c[8] ? c[8].v : 'Tidak Diisi',
                         kelas: c[11] ? c[11].v : '',
                         gender: c[12] ? c[12].v : ''
                     };
@@ -228,7 +280,14 @@
                                 ${siswa.gender || '-'}
                             </span>
                         </td>
-                        <td class="py-3.5 px-6 text-slate-600 font-medium">${siswa.kelas}</td>
+                        <td class="py-3.5 px-6">
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-700 font-medium">${siswa.kelas}</span>
+                                <button onclick="openModal(${siswa.id})" title="Lihat Jalur & Asal Sekolah" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 p-1.5 rounded-lg transition-colors flex items-center justify-center">
+                                    <i class="fa-solid fa-circle-info text-base"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 `).join('');
             }
@@ -236,6 +295,43 @@
             emptyState.classList.add('hidden');
             tableContainer.classList.remove('hidden');
         }
+
+        // Functions Modal Detail
+        function openModal(id) {
+            const siswa = allSiswaData.find(s => s.id === id);
+            if (!siswa) return;
+
+            document.getElementById('modalNama').textContent = siswa.nama;
+            document.getElementById('modalNisn').textContent = siswa.nisn || '-';
+            document.getElementById('modalKelas').textContent = siswa.kelas;
+            document.getElementById('modalGender').textContent = siswa.gender === 'L' ? 'Laki-laki (L)' : 'Perempuan (P)';
+            document.getElementById('modalJalur').textContent = siswa.jalur;
+            document.getElementById('modalKategori').textContent = siswa.kategori;
+            document.getElementById('modalSekolah').textContent = siswa.sekolahVerifikator;
+
+            const modal = document.getElementById('detailModal');
+            const card = document.getElementById('modalCard');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                card.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            const card = document.getElementById('modalCard');
+            modal.classList.add('opacity-0');
+            card.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // Tutup modal jika klik di luar modal
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
 
         // Event Listeners
         rombelSelect.addEventListener('change', renderData);
