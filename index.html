@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Siswa Kelas X TKJ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg py-6 mb-8">
+        <div class="max-w-6xl mx-auto px-4 text-center sm:text-left sm:flex sm:justify-between sm:items-center">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Data Siswa X TKJ</h1>
+                <p class="text-indigo-200 text-sm mt-1">Sistem Informasi Anggota Rombel Real-Time</p>
+            </div>
+            <div class="mt-4 sm:mt-0 bg-indigo-800 text-indigo-100 px-3 py-1.5 rounded-full text-xs font-semibold inline-flex items-center gap-2 border border-indigo-500/30">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Terhubung ke Google Sheets
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pb-16">
+        
+        <!-- Filter & Info Card -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            
+            <!-- Selector Rombel -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 md:col-span-1">
+                <label for="rombelSelect" class="block text-sm font-semibold text-slate-700 mb-2">
+                    <i class="fa-solid fa-users text-indigo-600 mr-2"></i>Pilih Rombel / Kelas
+                </label>
+                <select id="rombelSelect" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-slate-800 font-medium cursor-pointer">
+                    <option value="">-- Pilih Kelas --</option>
+                    <option value="X TKJ 1">X TKJ 1</option>
+                    <option value="X TKJ 2">X TKJ 2</option>
+                    <option value="X TKJ 3">X TKJ 3</option>
+                    <option value="X TKJ 4">X TKJ 4</option>
+                </select>
+            </div>
+
+            <!-- Card Wali Kelas -->
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 text-white p-6 rounded-2xl shadow-md md:col-span-2 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-semibold text-indigo-200 uppercase tracking-wider block mb-1">Wali Kelas</span>
+                    <h2 id="waliKelasNama" class="text-xl sm:text-2xl font-bold">Pilih kelas terlebih dahulu</h2>
+                    <p id="waliKelasNip" class="text-sm text-indigo-200 mt-1">NIP: -</p>
+                </div>
+                <div class="hidden sm:flex bg-white/10 p-4 rounded-full text-2xl">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Section Tabel -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+            
+            <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-indigo-600"></i>
+                    Daftar Anggota Rombel
+                    <span id="totalSiswa" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-semibold ml-2">0 Siswa</span>
+                </h3>
+
+                <!-- Search Input -->
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Cari nama / NISN..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading" class="hidden py-12 text-center text-slate-500">
+                <i class="fa-solid fa-circle-notch animate-spin text-3xl text-indigo-600 mb-3"></i>
+                <p class="text-sm">Memuat data dari Google Sheets...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="py-12 text-center text-slate-400">
+                <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-300"></i>
+                <p class="text-sm">Silakan pilih rombel di atas untuk menampilkan daftar siswa.</p>
+            </div>
+
+            <!-- Tabel Data -->
+            <div id="tableContainer" class="hidden overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                            <th class="py-3.5 px-6 w-16">No</th>
+                            <th class="py-3.5 px-6">NISN</th>
+                            <th class="py-3.5 px-6">Nama Siswa</th>
+                            <th class="py-3.5 px-6">L/P</th>
+                            <th class="py-3.5 px-6">Kelas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="siswaTableBody" class="divide-y divide-slate-100 text-sm">
+                        <!-- Data dimasukkan secara dinamis via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Google Sheet ID & Sheet Name
+        const SHEET_ID = '1Ep8TQijGiGRBx1Djpi8HtJdbFfM17Csi';
+        const SHEET_NAME = 'data siswa';
+        
+        // Query Endpoint GViz (Output JSON)
+        const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+        // Mapping Wali Kelas sesuai data Spreadsheet
+        const WALI_KELAS = {
+            'X TKJ 1': { nama: 'Mike Musna, S.Pd., Gr.', nip: '198305192022212008' },
+            'X TKJ 2': { nama: 'Suci Rahmadhani, S.Pd., Gr.', nip: '199303142022212005' },
+            'X TKJ 3': { nama: 'Altober Simanjuntak, S.Si.', nip: '198206142010011011' },
+            'X TKJ 4': { nama: 'Nadya Nabila, S.Tr, Kom', nip: '199706262025212105' }
+        };
+
+        let allSiswaData = [];
+
+        // DOM Elements
+        const rombelSelect = document.getElementById('rombelSelect');
+        const searchInput = document.getElementById('searchInput');
+        const waliKelasNama = document.getElementById('waliKelasNama');
+        const waliKelasNip = document.getElementById('waliKelasNip');
+        const siswaTableBody = document.getElementById('siswaTableBody');
+        const totalSiswa = document.getElementById('totalSiswa');
+        const loading = document.getElementById('loading');
+        const emptyState = document.getElementById('emptyState');
+        const tableContainer = document.getElementById('tableContainer');
+
+        // Fetch Data dari Google Sheet
+        async function fetchSheetData() {
+            try {
+                loading.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                tableContainer.classList.add('hidden');
+
+                const response = await fetch(GVIZ_URL);
+                const text = await response.text();
+                
+                // Parse JSON dari response Google Visualization API
+                const jsonText = text.substring(47, text.length - 2);
+                const data = JSON.parse(jsonText);
+                
+                const rows = data.table.rows;
+                
+                // Transform data baris menjadi array objek siswa
+                allSiswaData = rows.map(row => {
+                    const c = row.c;
+                    return {
+                        nama: c[2] ? c[2].v : '',
+                        nisn: c[3] ? String(c[3].v) : '',
+                        kelas: c[11] ? c[11].v : '',
+                        gender: c[12] ? c[12].v : ''
+                    };
+                }).filter(s => s.nama && s.kelas && s.kelas.startsWith('X TKJ'));
+
+                loading.classList.add('hidden');
+                
+                if (rombelSelect.value) {
+                    renderData();
+                } else {
+                    emptyState.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('Gagal mengambil data:', error);
+                loading.classList.add('hidden');
+                emptyState.innerHTML = `<p class="text-red-500 font-semibold">Gagal memuat data dari Google Sheet. Pastikan akses Google Sheet telah diset publik.</p>`;
+                emptyState.classList.remove('hidden');
+            }
+        }
+
+        // Render Data Siswa ke Tabel
+        function renderData() {
+            const selectedRombel = rombelSelect.value;
+            const searchTerm = searchInput.value.toLowerCase();
+
+            if (!selectedRombel) {
+                emptyState.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                waliKelasNama.textContent = 'Pilih kelas terlebih dahulu';
+                waliKelasNip.textContent = 'NIP: -';
+                totalSiswa.textContent = '0 Siswa';
+                return;
+            }
+
+            // Update Info Wali Kelas
+            if (WALI_KELAS[selectedRombel]) {
+                waliKelasNama.textContent = WALI_KELAS[selectedRombel].nama;
+                waliKelasNip.textContent = `NIP: ${WALI_KELAS[selectedRombel].nip}`;
+            }
+
+            // Filter data berdasarkan kelas & search
+            const filteredSiswa = allSiswaData.filter(siswa => {
+                const matchKelas = siswa.kelas === selectedRombel;
+                const matchSearch = siswa.nama.toLowerCase().includes(searchTerm) || siswa.nisn.includes(searchTerm);
+                return matchKelas && matchSearch;
+            });
+
+            totalSiswa.textContent = `${filteredSiswa.length} Siswa`;
+
+            if (filteredSiswa.length === 0) {
+                siswaTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-slate-400">
+                            Tidak ada siswa ditemukan untuk kelas ini.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                siswaTableBody.innerHTML = filteredSiswa.map((siswa, idx) => `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3.5 px-6 font-medium text-slate-400">${idx + 1}</td>
+                        <td class="py-3.5 px-6 font-mono text-slate-600">${siswa.nisn || '-'}</td>
+                        <td class="py-3.5 px-6 font-semibold text-slate-800">${siswa.nama}</td>
+                        <td class="py-3.5 px-6">
+                            <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-md ${siswa.gender === 'L' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700'}">
+                                ${siswa.gender || '-'}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-6 text-slate-600 font-medium">${siswa.kelas}</td>
+                    </tr>
+                `).join('');
+            }
+
+            emptyState.classList.add('hidden');
+            tableContainer.classList.remove('hidden');
+        }
+
+        // Event Listeners
+        rombelSelect.addEventListener('change', renderData);
+        searchInput.addEventListener('input', renderData);
+
+        // Load data saat halaman dibuka
+        window.addEventListener('DOMContentLoaded', fetchSheetData);
+    </script>
+</body>
+</html>
