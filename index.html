@@ -35,7 +35,7 @@
                     <i class="fa-solid fa-users text-indigo-600 mr-2"></i>Pilih Rombel / Kelas
                 </label>
                 <select id="rombelSelect" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-slate-800 font-medium cursor-pointer">
-                    <option value="">-- Pilih Kelas --</option>
+                    <option value="">Semua Kelas (Cari Siswa)</option>
                     <option value="X TKJ 1">X TKJ 1</option>
                     <option value="X TKJ 2">X TKJ 2</option>
                     <option value="X TKJ 3">X TKJ 3</option>
@@ -47,8 +47,8 @@
             <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 text-white p-6 rounded-2xl shadow-md md:col-span-2 flex items-center justify-between">
                 <div>
                     <span class="text-xs font-semibold text-indigo-200 uppercase tracking-wider block mb-1">Wali Kelas</span>
-                    <h2 id="waliKelasNama" class="text-xl sm:text-2xl font-bold">Pilih kelas terlebih dahulu</h2>
-                    <p id="waliKelasNip" class="text-sm text-indigo-200 mt-1">NIP: -</p>
+                    <h2 id="waliKelasNama" class="text-xl sm:text-2xl font-bold">Semua Kelas X TKJ</h2>
+                    <p id="waliKelasNip" class="text-sm text-indigo-200 mt-1">Gunakan kolom pencarian di bawah untuk mencari nama siswa</p>
                 </div>
                 <div class="hidden sm:flex bg-white/10 p-4 rounded-full text-2xl">
                     <i class="fa-solid fa-user-tie"></i>
@@ -69,7 +69,7 @@
 
                 <!-- Search Input -->
                 <div class="relative">
-                    <input type="text" id="searchInput" placeholder="Cari nama / NISN..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-64">
+                    <input type="text" id="searchInput" placeholder="Cari nama atau NISN..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-72 font-medium">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
                 </div>
             </div>
@@ -83,7 +83,7 @@
             <!-- Empty State -->
             <div id="emptyState" class="py-12 text-center text-slate-400">
                 <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-300"></i>
-                <p class="text-sm">Silakan pilih rombel di atas untuk menampilkan daftar siswa.</p>
+                <p class="text-sm">Data tidak ditemukan. Coba ketikkan nama atau NISN yang sesuai.</p>
             </div>
 
             <!-- Tabel Data -->
@@ -218,11 +218,8 @@
 
                 loading.classList.add('hidden');
                 
-                if (rombelSelect.value) {
-                    renderData();
-                } else {
-                    emptyState.classList.remove('hidden');
-                }
+                // Render data langsung saat halaman pertama loaded
+                renderData();
 
             } catch (error) {
                 console.error('Gagal mengambil data:', error);
@@ -235,26 +232,20 @@
         // Render Data Siswa ke Tabel
         function renderData() {
             const selectedRombel = rombelSelect.value;
-            const searchTerm = searchInput.value.toLowerCase();
-
-            if (!selectedRombel) {
-                emptyState.classList.remove('hidden');
-                tableContainer.classList.add('hidden');
-                waliKelasNama.textContent = 'Pilih kelas terlebih dahulu';
-                waliKelasNip.textContent = 'NIP: -';
-                totalSiswa.textContent = '0 Siswa';
-                return;
-            }
+            const searchTerm = searchInput.value.toLowerCase().trim();
 
             // Update Info Wali Kelas
-            if (WALI_KELAS[selectedRombel]) {
+            if (selectedRombel && WALI_KELAS[selectedRombel]) {
                 waliKelasNama.textContent = WALI_KELAS[selectedRombel].nama;
                 waliKelasNip.textContent = `NIP: ${WALI_KELAS[selectedRombel].nip}`;
+            } else {
+                waliKelasNama.textContent = 'Semua Kelas X TKJ';
+                waliKelasNip.textContent = 'Gunakan kolom pencarian di atas untuk mencari nama siswa';
             }
 
             // Filter data berdasarkan kelas & search
             const filteredSiswa = allSiswaData.filter(siswa => {
-                const matchKelas = siswa.kelas === selectedRombel;
+                const matchKelas = selectedRombel ? siswa.kelas === selectedRombel : true;
                 const matchSearch = siswa.nama.toLowerCase().includes(searchTerm) || siswa.nisn.includes(searchTerm);
                 return matchKelas && matchSearch;
             });
@@ -262,14 +253,12 @@
             totalSiswa.textContent = `${filteredSiswa.length} Siswa`;
 
             if (filteredSiswa.length === 0) {
-                siswaTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="py-8 text-center text-slate-400">
-                            Tidak ada siswa ditemukan untuk kelas ini.
-                        </td>
-                    </tr>
-                `;
+                tableContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
             } else {
+                emptyState.classList.add('hidden');
+                tableContainer.classList.remove('hidden');
+
                 siswaTableBody.innerHTML = filteredSiswa.map((siswa, idx) => `
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="py-3.5 px-6 font-medium text-slate-400">${idx + 1}</td>
@@ -282,8 +271,8 @@
                         </td>
                         <td class="py-3.5 px-6">
                             <div class="flex items-center gap-2">
-                                <span class="text-slate-700 font-medium">${siswa.kelas}</span>
-                                <button onclick="openModal(${siswa.id})" title="Lihat Jalur & Asal Sekolah" class="text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 p-1.5 rounded-lg transition-colors flex items-center justify-center">
+                                <span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg font-semibold text-xs border border-indigo-200/60">${siswa.kelas}</span>
+                                <button onclick="openModal(${siswa.id})" title="Lihat Detail Jalur & Sekolah" class="text-slate-400 hover:text-indigo-600 hover:bg-slate-100 p-1.5 rounded-lg transition-colors flex items-center justify-center">
                                     <i class="fa-solid fa-circle-info text-base"></i>
                                 </button>
                             </div>
@@ -291,9 +280,6 @@
                     </tr>
                 `).join('');
             }
-
-            emptyState.classList.add('hidden');
-            tableContainer.classList.remove('hidden');
         }
 
         // Functions Modal Detail
