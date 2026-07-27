@@ -7,19 +7,192 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-slate-100 min-h-screen text-slate-800 font-sans">
+    
+    <style>
+        /* --- TEMA VARIABLE (DEFAULT: TERANG) --- */
+        :root {
+            --bg-color: #f8fafc;
+            --header-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-sub: #64748b;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --icon-bg: #f0f9ff;
+            --icon-border: #e0f2fe;
+            --icon-color: #0284c7;
+            --brand-color: #0284c7;
+            --nav-link: #475569;
+            --border-line: #e2e8f0;
+        }
 
-    <!-- Header -->
-    <header class="bg-indigo-700 text-white shadow-lg py-6 mb-8">
-        <div class="max-w-6xl mx-auto px-4 text-center sm:text-left sm:flex sm:justify-between sm:items-center">
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Data Siswa X TKJ</h1>
-                <p class="text-indigo-200 text-sm mt-1">Sistem Informasi Anggota Rombel Real-Time</p>
-            </div>
-            <div class="mt-4 sm:mt-0 bg-indigo-800 text-indigo-100 px-3 py-1.5 rounded-full text-xs font-semibold inline-flex items-center gap-2 border border-indigo-500/30">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Terhubung ke Google Sheets
+        /* --- SKEMA TEMA GELAP --- */
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --header-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --icon-bg: rgba(56, 189, 248, 0.1);
+            --icon-border: rgba(56, 189, 248, 0.2);
+            --icon-color: #38bdf8;
+            --brand-color: #38bdf8;
+            --nav-link: #cbd5e1;
+            --border-line: #334155;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header.custom-header {
+            background-color: var(--header-bg);
+            color: var(--text-main);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-line);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .custom-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background-color: var(--icon-bg);
+            border: 1px solid var(--icon-border);
+            border-radius: 12px;
+            color: var(--brand-color);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.08) rotate(-5deg);
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            color: var(--nav-link);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--brand-color);
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border-line);
+            color: var(--text-main);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--brand-color);
+            color: var(--brand-color);
+            transform: scale(1.08) rotate(12deg);
+        }
+
+        .theme-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @media (max-width: 768px) {
+            .custom-navbar {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans">
+
+    <!-- Header Navbar -->
+    <header class="custom-header mb-8">
+        <div class="max-w-6xl mx-auto px-4 custom-navbar">
+            <!-- LOGO ICON KUSTOM -->
+            <a href="https://itsmuu.github.io/" class="logo-icon" title="Portal Utama">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+            </a>
+
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="https://itsmuu.github.io/">Dashboard</a></li>
+                    <li><a href="#" class="active">Rombel</a></li>
+                </ul>
+                
+                <!-- Tombol Sakelar Tema -->
+                <button class="theme-toggle-btn" id="theme-toggle" title="Ubah Tema">
+                    <!-- Icon Bulan (Mode Terang) -->
+                    <svg id="moon-icon" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <!-- Icon Matahari (Mode Gelap) -->
+                    <svg id="sun-icon" viewBox="0 0 24 24" style="display: none;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -81,7 +254,6 @@
             </div>
 
             <!-- Empty / Initial State -->
-            <!-- Empty / Initial State (Ilustrasi Searching File) -->
             <div id="emptyState" class="py-12 px-4 text-center flex flex-col items-center justify-center">
                 
                 <!-- Vector Illustration Component -->
@@ -105,11 +277,10 @@
                         </div>
                     </div>
             
-                    <!-- Animated Magnifying Glass (Searching Action) -->
+                    <!-- Animated Magnifying Glass -->
                     <div class="absolute z-20 top-2 right-2 animate-bounce transition-all duration-1000" style="animation-duration: 3s;">
                         <div class="w-16 h-16 bg-white/90 backdrop-blur-md rounded-full border-2 border-indigo-500 shadow-lg flex items-center justify-center text-indigo-600 text-2xl relative">
                             <i class="fa-solid fa-file-circle-question"></i>
-                            <!-- Sparkle effect -->
                             <span class="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full animate-ping"></span>
                         </div>
                     </div>
@@ -200,14 +371,43 @@
     </div>
 
     <script>
-        // Google Sheet ID & Sheet Name
+        // --- SCRIPT NAVBAR THEME TOGGLE ---
+        const toggleBtn = document.getElementById('theme-toggle');
+        const moonIcon = document.getElementById('moon-icon');
+        const sunIcon = document.getElementById('sun-icon');
+        
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'dark') {
+                moonIcon.style.display = 'none';
+                sunIcon.style.display = 'block';
+            }
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = 'light';
+
+            if (currentTheme !== 'dark') {
+                newTheme = 'dark';
+                moonIcon.style.display = 'none';
+                sunIcon.style.display = 'block';
+            } else {
+                moonIcon.style.display = 'block';
+                sunIcon.style.display = 'none';
+            }
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // --- SCRIPT GOOGLE SHEETS & LOGIC DATA SISWA ---
         const SHEET_ID = '1Ep8TQijGiGRBx1Djpi8HtJdbFfM17Csi';
         const SHEET_NAME = 'data siswa';
         
-        // Query Endpoint GViz (Output JSON)
         const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
-        // Mapping Wali Kelas
         const WALI_KELAS = {
             'X TKJ 1': { nama: 'Mike Musna, S.Pd., Gr.', nip: '198305192022212008' },
             'X TKJ 2': { nama: 'Suci Rahmadhani, S.Pd., Gr.', nip: '199303142022212005' },
@@ -217,7 +417,6 @@
 
         let allSiswaData = [];
 
-        // DOM Elements
         const rombelSelect = document.getElementById('rombelSelect');
         const searchInput = document.getElementById('searchInput');
         const waliKelasNama = document.getElementById('waliKelasNama');
@@ -229,7 +428,6 @@
         const emptyStateText = document.getElementById('emptyStateText');
         const tableContainer = document.getElementById('tableContainer');
 
-        // Fetch Data dari Google Sheet
         async function fetchSheetData() {
             try {
                 loading.classList.remove('hidden');
@@ -239,7 +437,6 @@
                 const response = await fetch(GVIZ_URL);
                 const text = await response.text();
                 
-                // Parse JSON dari response Google Visualization API
                 const jsonText = text.substring(47, text.length - 2);
                 const data = JSON.parse(jsonText);
                 
@@ -270,12 +467,10 @@
             }
         }
 
-        // Render Data Siswa
         function renderData() {
             const selectedRombel = rombelSelect.value;
             const searchTerm = searchInput.value.toLowerCase().trim();
 
-            // Update Info Banner Wali Kelas
             if (selectedRombel && WALI_KELAS[selectedRombel]) {
                 waliKelasNama.textContent = WALI_KELAS[selectedRombel].nama;
                 waliKelasNip.textContent = `NIP: ${WALI_KELAS[selectedRombel].nip}`;
@@ -284,7 +479,6 @@
                 waliKelasNip.textContent = 'NIP-';
             }
 
-            // Jika KELAS BELUM DIPILIH DAN SEARCH MASIH KOSONG -> Tampilkan State Awal (Kosong)
             if (!selectedRombel && searchTerm === '') {
                 totalSiswa.textContent = '0 Siswa';
                 tableContainer.classList.add('hidden');
@@ -293,7 +487,6 @@
                 return;
             }
 
-            // Filter data secara global atau per kelas
             const filteredSiswa = allSiswaData.filter(siswa => {
                 const matchKelas = selectedRombel ? siswa.kelas === selectedRombel : true;
                 const matchSearch = siswa.nama.toLowerCase().includes(searchTerm) || siswa.nisn.includes(searchTerm);
@@ -302,7 +495,6 @@
 
             totalSiswa.textContent = `${filteredSiswa.length} Siswa`;
 
-            // Jika setelah dicari tetap tidak ada data
             if (filteredSiswa.length === 0) {
                 tableContainer.classList.add('hidden');
                 emptyStateText.textContent = `Tidak ditemukan siswa dengan kata kunci "${searchTerm}".`;
@@ -334,7 +526,6 @@
             }
         }
 
-        // Functions Modal Detail
         function openModal(id) {
             const siswa = allSiswaData.find(s => s.id === id);
             if (!siswa) return;
@@ -370,11 +561,9 @@
             if (e.target === this) closeModal();
         });
 
-        // Event Listeners
         rombelSelect.addEventListener('change', renderData);
         searchInput.addEventListener('input', renderData);
 
-        // Load data saat halaman dibuka
         window.addEventListener('DOMContentLoaded', fetchSheetData);
     </script>
 </body>
