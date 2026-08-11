@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        /* --- TEMA VARIABLE (DEFAULT: TERANG) --- */
+        /* --- TEMA VARIABLE (WARNA UTAMA DIADOPSI DARI IKON: #0088cc) --- */
         :root {
             --bg-color: #f8fafc;
             --header-bg: #ffffff;
@@ -17,10 +17,10 @@
             --text-sub: #64748b;
             --card-bg: #ffffff;
             --card-border: #e2e8f0;
-            --icon-bg: #f0f9ff;
-            --icon-border: #e0f2fe;
-            --icon-color: #0284c7;
-            --brand-color: #0284c7;
+            --icon-bg: #e0f2fe;
+            --icon-border: #bae6fd;
+            --icon-color: #0088cc;
+            --brand-color: #0088cc;
             --nav-link: #475569;
             --border-line: #e2e8f0;
             --dropdown-bg: #ffffff;
@@ -35,8 +35,8 @@
             --text-sub: #94a3b8;
             --card-bg: #1e293b;
             --card-border: #334155;
-            --icon-bg: rgba(56, 189, 248, 0.1);
-            --icon-border: rgba(56, 189, 248, 0.2);
+            --icon-bg: rgba(0, 136, 204, 0.15);
+            --icon-border: rgba(0, 136, 204, 0.3);
             --icon-color: #38bdf8;
             --brand-color: #38bdf8;
             --nav-link: #cbd5e1;
@@ -384,9 +384,9 @@
             <!-- Selector Rombel -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 md:col-span-1">
                 <label for="rombelSelect" class="block text-sm font-semibold text-slate-700 mb-2">
-                    <i class="fa-solid fa-users text-indigo-600 mr-2"></i>Pilih Rombel / Kelas
+                    <i class="fa-solid fa-users text-[#0088cc] mr-2"></i>Pilih Rombel / Kelas
                 </label>
-                <select id="rombelSelect" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-slate-800 font-medium cursor-pointer">
+                <select id="rombelSelect" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#0088cc] focus:border-[#0088cc] transition text-slate-800 font-medium cursor-pointer">
                     <option value="">-- Semua Kelas --</option>
                     <optgroup label="Kelas X">
                         <option value="X TKJ 1">X TKJ 1</option>
@@ -412,12 +412,12 @@
                 </select>
             </div>
 
-            <!-- Card Wali Kelas / Info Search -->
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 text-white p-6 rounded-2xl shadow-md md:col-span-2 flex items-center justify-between">
+            <!-- Card Wali Kelas / Info Search (Warna Gradient Biru Kalender #0088cc) -->
+            <div class="bg-gradient-to-br from-[#0088cc] to-[#005d93] text-white p-6 rounded-2xl shadow-md md:col-span-2 flex items-center justify-between">
                 <div>
-                    <span class="text-xs font-semibold text-indigo-200 uppercase tracking-wider block mb-1">Informasi Wali Kelas</span>
+                    <span class="text-xs font-semibold text-sky-100 uppercase tracking-wider block mb-1">Informasi Wali Kelas</span>
                     <h2 id="waliKelasNama" class="text-xl sm:text-2xl font-bold">Wali Kelas</h2>
-                    <p id="waliKelasNip" class="text-sm text-indigo-200 mt-1">NIP-</p>
+                    <p id="waliKelasNip" class="text-sm text-sky-100 mt-1">NIP-</p>
                 </div>
                 <div class="hidden sm:flex bg-white/10 p-4 rounded-full text-2xl">
                     <i class="fa-solid fa-user-tie"></i>
@@ -431,21 +431,21 @@
             
             <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-list-ol text-indigo-600"></i>
+                    <i class="fa-solid fa-list-ol text-[#0088cc]"></i>
                     Daftar Anggota Rombel
                     <span id="totalSiswa" class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-semibold ml-2">0 Siswa</span>
                 </h3>
 
                 <!-- Search Input -->
                 <div class="relative">
-                    <input type="text" id="searchInput" placeholder="Cari nama atau NISN..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-72 font-medium">
+                    <input type="text" id="searchInput" placeholder="Cari nama atau NISN..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-[#0088cc] focus:border-[#0088cc] w-full sm:w-72 font-medium">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
                 </div>
             </div>
 
             <!-- Loading State -->
             <div id="loading" class="hidden py-12 text-center text-slate-500">
-                <i class="fa-solid fa-circle-notch animate-spin text-3xl text-indigo-600 mb-3"></i>
+                <i class="fa-solid fa-circle-notch animate-spin text-3xl text-[#0088cc] mb-3"></i>
                 <p class="text-sm">Memuat data dari Google Sheets...</p>
             </div>
 
@@ -454,14 +454,14 @@
                 
                 <!-- Vector Illustration Component -->
                 <div class="relative w-40 h-40 mb-4 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-indigo-100/60 rounded-full blur-2xl transform scale-90"></div>
+                    <div class="absolute inset-0 bg-sky-100/60 rounded-full blur-2xl transform scale-90"></div>
             
-                    <div class="relative z-10 w-28 h-24 bg-indigo-100 border-2 border-indigo-200 rounded-2xl p-3 shadow-sm flex flex-col justify-end overflow-hidden">
-                        <div class="absolute top-0 left-0 w-12 h-3 bg-indigo-300 rounded-tr-md"></div>
+                    <div class="relative z-10 w-28 h-24 bg-sky-50 border-2 border-sky-200 rounded-2xl p-3 shadow-sm flex flex-col justify-end overflow-hidden">
+                        <div class="absolute top-0 left-0 w-12 h-3 bg-sky-200 rounded-tr-md"></div>
                         
                         <div class="w-full h-12 bg-white rounded-lg border border-slate-200 shadow-sm p-2 mb-1 transform -rotate-3 transition-transform">
                             <div class="w-2/3 h-1.5 bg-slate-200 rounded mb-1"></div>
-                            <div class="w-1/2 h-1.5 bg-indigo-100 rounded"></div>
+                            <div class="w-1/2 h-1.5 bg-sky-100 rounded"></div>
                         </div>
                         <div class="w-full h-10 bg-white/90 rounded-lg border border-slate-200 shadow-sm p-2 transform rotate-2">
                             <div class="w-3/4 h-1.5 bg-slate-200 rounded"></div>
@@ -469,9 +469,9 @@
                     </div>
             
                     <div class="absolute z-20 top-2 right-2 animate-bounce transition-all duration-1000" style="animation-duration: 3s;">
-                        <div class="w-16 h-16 bg-white/90 backdrop-blur-md rounded-full border-2 border-indigo-500 shadow-lg flex items-center justify-center text-indigo-600 text-2xl relative">
+                        <div class="w-16 h-16 bg-white/90 backdrop-blur-md rounded-full border-2 border-[#0088cc] shadow-lg flex items-center justify-center text-[#0088cc] text-2xl relative">
                             <i class="fa-solid fa-file-circle-question"></i>
-                            <span class="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full animate-ping"></span>
+                            <span class="absolute -top-1 -right-1 w-3 h-3 bg-sky-400 rounded-full animate-ping"></span>
                         </div>
                     </div>
                 </div>
@@ -575,7 +575,7 @@
         
         const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
-        // DAFTAR WALI KELAS LENGKAP (Silakan perbarui nama & NIP jika diperlukan)
+        // DAFTAR WALI KELAS LENGKAP
         const WALI_KELAS = {
             'X TKJ 1': { nama: 'Mike Musna, S.Pd., Gr.', nip: '198305192022212008' },
             'X TKJ 2': { nama: 'Suci Rahmadhani, S.Pd., Gr.', nip: '199303142022212005' },
@@ -607,7 +607,6 @@
         const emptyStateText = document.getElementById('emptyStateText');
         const tableContainer = document.getElementById('tableContainer');
 
-        // Fungsi Helper untuk membersihkan string kelas (Mengabaikan perbedaan huruf kapital & spasi ganda)
         function cleanClassString(str) {
             return (str || '').toString().toUpperCase().replace(/\s+/g, ' ').trim();
         }
@@ -652,7 +651,6 @@
             const cleanSelectedRombel = cleanClassString(selectedRombel);
             const searchTerm = searchInput.value.toLowerCase().trim();
 
-            // Mencari Key Wali Kelas yang Cocok secara fleksibel
             const waliKey = Object.keys(WALI_KELAS).find(k => cleanClassString(k) === cleanSelectedRombel);
 
             if (selectedRombel && waliKey) {
@@ -671,7 +669,6 @@
                 return;
             }
 
-            // Filtering Data Siswa
             const filteredSiswa = allSiswaData.filter(siswa => {
                 const matchKelas = selectedRombel 
                     ? cleanClassString(siswa.kelas) === cleanSelectedRombel 
@@ -696,7 +693,7 @@
                         <td class="py-3.5 px-6 font-mono text-slate-600">${siswa.nisn || '-'}</td>
                         <td class="py-3.5 px-6 font-semibold text-slate-800">${siswa.nama}</td>
                         <td class="py-3.5 px-6">
-                            <span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg font-semibold text-xs border border-indigo-200/60">${siswa.kelas}</span>
+                            <span class="bg-sky-50 text-[#0088cc] px-2.5 py-1 rounded-lg font-semibold text-xs border border-sky-200/80">${siswa.kelas}</span>
                         </td>
                     </tr>
                 `).join('');
