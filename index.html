@@ -438,7 +438,7 @@
 
                 <!-- Search Input -->
                 <div class="relative">
-                    <input type="text" id="searchInput" placeholder="Cari nama atau NISN..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-[#0088cc] focus:border-[#0088cc] w-full sm:w-72 font-medium">
+                    <input type="text" id="searchInput" placeholder="Cari nama atau NIS..." class="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-[#0088cc] focus:border-[#0088cc] w-full sm:w-72 font-medium">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
                 </div>
             </div>
@@ -478,12 +478,12 @@
             
                 <h4 id="emptyStateTitle" class="text-base font-bold text-slate-700">Mencari Data Siswa?</h4>
                 <p id="emptyStateText" class="text-xs text-slate-500 mt-1 max-w-sm">
-                    Silakan ketik **Nama / NISN** pada kolom pencarian di atas, atau pilih **Rombel / Kelas** pada menu dropdown.
+                    Silakan ketik **Nama / NIS** pada kolom pencarian di atas, atau pilih **Rombel / Kelas** pada menu dropdown.
                 </p>
             
                 <div class="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-medium border border-slate-200">
                     <i class="fa-solid fa-lightbulb text-amber-500"></i>
-                    <span>Tips: Gunakan NISN untuk pencarian lebih spesifik</span>
+                    <span>Tips: Gunakan NIS untuk pencarian lebih spesifik</span>
                 </div>
             
             </div>
@@ -494,7 +494,7 @@
                     <thead>
                         <tr class="bg-slate-50 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
                             <th class="py-3.5 px-6 w-16">No</th>
-                            <th class="py-3.5 px-6">NISN</th>
+                            <th class="py-3.5 px-6">NIS</th>
                             <th class="py-3.5 px-6">Nama Siswa</th>
                             <th class="py-3.5 px-6">Kelas</th>
                         </tr>
@@ -630,7 +630,7 @@
                     return {
                         id: index,
                         nama: c[2] ? String(c[2].v).trim() : '',
-                        nisn: c[3] ? String(c[3].v).trim() : '',
+                        nis: c[3] ? String(c[3].v).trim() : '',
                         kelas: c[11] ? String(c[11].v).trim() : ''
                     };
                 }).filter(s => s.nama && s.kelas);
@@ -664,7 +664,7 @@
             if (!selectedRombel && searchTerm === '') {
                 totalSiswa.textContent = '0 Siswa';
                 tableContainer.classList.add('hidden');
-                emptyStateText.textContent = 'Silakan ketik Nama / NISN di atas untuk mencari kelas.';
+                emptyStateText.textContent = 'Silakan ketik Nama / NIS di atas untuk mencari kelas.';
                 emptyState.classList.remove('hidden');
                 return;
             }
@@ -673,7 +673,7 @@
                 const matchKelas = selectedRombel 
                     ? cleanClassString(siswa.kelas) === cleanSelectedRombel 
                     : true;
-                const matchSearch = siswa.nama.toLowerCase().includes(searchTerm) || siswa.nisn.includes(searchTerm);
+                const matchSearch = siswa.nama.toLowerCase().includes(searchTerm) || siswa.nis.includes(searchTerm);
                 return matchKelas && matchSearch;
             });
 
@@ -690,7 +690,7 @@
                 siswaTableBody.innerHTML = filteredSiswa.map((siswa, idx) => `
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="py-3.5 px-6 font-medium text-slate-400">${idx + 1}</td>
-                        <td class="py-3.5 px-6 font-mono text-slate-600">${siswa.nisn || '-'}</td>
+                        <td class="py-3.5 px-6 font-mono text-slate-600">${siswa.nis || '-'}</td>
                         <td class="py-3.5 px-6 font-semibold text-slate-800">${siswa.nama}</td>
                         <td class="py-3.5 px-6">
                             <span class="bg-sky-50 text-[#0088cc] px-2.5 py-1 rounded-lg font-semibold text-xs border border-sky-200/80">${siswa.kelas}</span>
