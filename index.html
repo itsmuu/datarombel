@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Siswa Kelas X TKJ</title>
+    <title>Data Siswa TKJ</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -388,10 +388,21 @@
                 </label>
                 <select id="rombelSelect" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition text-slate-800 font-medium cursor-pointer">
                     <option value="">-- Semua Kelas --</option>
-                    <option value="X TKJ 1">X TKJ 1</option>
-                    <option value="X TKJ 2">X TKJ 2</option>
-                    <option value="X TKJ 3">X TKJ 3</option>
-                    <option value="X TKJ 4">X TKJ 4</option>
+                        <option value="X TKJ 1">X TKJ 1</option>
+                        <option value="X TKJ 2">X TKJ 2</option>
+                        <option value="X TKJ 3">X TKJ 3</option>
+                        <option value="X TKJ 4">X TKJ 4</option>
+                        <option value="XI TKJ 1">XI TKJ 1</option>
+                        <option value="XI TKJ 2">XI TKJ 2</option>
+                        <option value="XI TKJ 3">XI TKJ 3</option>
+                        <option value="XI TKJ 4">XI TKJ 4</option>
+                        <option value="XI TKJ INDUSTRI 1">XI TKJ INDUSTRI 1</option>
+                        <option value="XI TKJ INDUSTRI 2">XI TKJ INDUSTRI 2</option>
+                        <option value="XII TKJ 1">XII TKJ 1</option>
+                        <option value="XII TKJ 2">XII TKJ 2</option>
+                        <option value="XII TKJ 3">XII TKJ 3</option>
+                        <option value="XII TKJ INDUSTRI 1">XII TKJ INDUSTRI 1</option>
+                        <option value="XII TKJ INDUSTRI 2">XII TKJ INDUSTRI 2</option>
                 </select>
             </div>
 
@@ -650,10 +661,10 @@
                         jalur: c[4] ? c[4].v : 'Tidak Diisi',
                         kategori: c[5] ? c[5].v : 'Tidak Diisi',
                         sekolahVerifikator: c[8] ? c[8].v : 'Tidak Diisi',
-                        kelas: c[11] ? c[11].v : '',
+                        kelas: c[11] ? String(c[11].v).trim() : '',
                         gender: c[12] ? c[12].v : ''
                     };
-                }).filter(s => s.nama && s.kelas && s.kelas.startsWith('X TKJ'));
+                }).filter(s => s.nama && s.kelas);
 
                 loading.classList.add('hidden');
                 renderData();
