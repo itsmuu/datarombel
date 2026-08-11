@@ -575,23 +575,23 @@
         
         const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
-        // DAFTAR WALI KELAS LENGKAP
+        // DAFTAR WALI KELAS TERPERBARUI SESUAI DATA SHEET
         const WALI_KELAS = {
             'X TKJ 1': { nama: 'Mike Musna, S.Pd., Gr.', nip: '198305192022212008' },
             'X TKJ 2': { nama: 'Suci Rahmadhani, S.Pd., Gr.', nip: '199303142022212005' },
             'X TKJ 3': { nama: 'Altober Simanjuntak, S.Si.', nip: '198206142010011011' },
             'X TKJ 4': { nama: 'Nadya Nabila, S.Tr, Kom', nip: '199706262025212105' },
-            'XI TKJ 1': { nama: 'Wali Kelas XI TKJ 1', nip: '-' },
-            'XI TKJ 2': { nama: 'Wali Kelas XI TKJ 2', nip: '-' },
-            'XI TKJ 3': { nama: 'Wali Kelas XI TKJ 3', nip: '-' },
-            'XI TKJ 4': { nama: 'Wali Kelas XI TKJ 4', nip: '-' },
-            'XI TKJ INDUSTRI 1': { nama: 'Wali Kelas XI TKJ Industri 1', nip: '-' },
-            'XI TKJ INDUSTRI 2': { nama: 'Wali Kelas XI TKJ Industri 2', nip: '-' },
-            'XII TKJ 1': { nama: 'Wali Kelas XII TKJ 1', nip: '-' },
-            'XII TKJ 2': { nama: 'Wali Kelas XII TKJ 2', nip: '-' },
-            'XII TKJ 3': { nama: 'Wali Kelas XII TKJ 3', nip: '-' },
-            'XII TKJ INDUSTRI 1': { nama: 'Wali Kelas XII TKJ Industri 1', nip: '-' },
-            'XII TKJ INDUSTRI 2': { nama: 'Wali Kelas XII TKJ Industri 2', nip: '-' }
+            'XI TKJ 1': { nama: 'Tuti Aina, S.Ag', nip: '-' },
+            'XI TKJ 2': { nama: 'Rahmadewita, S.Si', nip: '-' },
+            'XI TKJ 3': { nama: 'Sumarni, S.Pd', nip: '-' },
+            'XI TKJ 4': { nama: 'Zainul Arifin, S. Kom', nip: '-' },
+            'XI TKJ INDUSTRI 1': { nama: 'Yarliansyah Agustian, S.ST', nip: '-' },
+            'XI TKJ INDUSTRI 2': { nama: 'Yeni Rifma Yona, S.Pd', nip: '-' },
+            'XII TKJ 1': { nama: 'Hidayatul Atikah, S.Pd', nip: '-' },
+            'XII TKJ 2': { nama: 'Fadilathul Annisa, S.Pd', nip: '-' },
+            'XII TKJ 3': { nama: 'Dra. Rika Adrianti', nip: '-' },
+            'XII TKJ INDUSTRI 1': { nama: 'Dilla Rezki Aditama, S.Pd', nip: '-' },
+            'XII TKJ INDUSTRI 2': { nama: 'Herlina Septiani, S.Pd, Gr', nip: '-' }
         };
 
         let allSiswaData = [];
@@ -655,7 +655,7 @@
 
             if (selectedRombel && waliKey) {
                 waliKelasNama.textContent = WALI_KELAS[waliKey].nama;
-                waliKelasNip.textContent = WALI_KELAS[waliKey].nip !== '-' ? `NIP: ${WALI_KELAS[waliKey].nip}` : 'NIP: -';
+                waliKelasNip.textContent = (WALI_KELAS[waliKey].nip && WALI_KELAS[waliKey].nip !== '-') ? `NIP: ${WALI_KELAS[waliKey].nip}` : 'NIP: -';
             } else {
                 waliKelasNama.textContent = 'Wali Kelas';
                 waliKelasNip.textContent = 'NIP-';
